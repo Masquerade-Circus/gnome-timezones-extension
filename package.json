@@ -1,0 +1,48 @@
+{
+  "name": "gnome-timezones-extension",
+  "version": "0.0.0",
+  "description": "Show multiple clock timezones in the panel",
+  "main": "extension.js",
+  "repository": "git@github.com:Masquerade-Circus/gnome-timezones-extension.git",
+  "license": "Apache-2.0",
+  "author": "Masquerade <christian@masquerade-circus.net>",
+  "private": false,
+  "keywords": [
+    "gnome",
+    "gnome-shell",
+    "extension",
+    "clock",
+    "timezones",
+    "multiple"
+  ],
+  "scripts": {
+    "dev:source": "cross-env NODE_ENV=development node rollupSource.js",
+    "build:source": "cross-env NODE_ENV=production node rollupSource.js",
+    "watch-log": "journalctl -f -o cat /usr/bin/gnome-shell",
+    "enable": "gnome-shell-extension-tool -e timezones@masquerade-circus.net",
+    "disable": "gnome-shell-extension-tool -d timezones@masquerade-circus.net",
+    "restart": "gnome-shell --replace &",
+    "compile": "glib-compile-schemas schemas/",
+    "zip": "zip -r timezones@masquerade-circus.net.zip schemas/* extension.js metadata.json",
+    "build": "yarn build:source && yarn compile && yarn zip"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-buble": "^0.21.0",
+    "@rollup/plugin-json": "^4.0.2",
+    "babel-eslint": "^10.0.3",
+    "cross-env": "^7.0.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-gjs": "bartlibert/eslint-plugin-gjs",
+    "eslint-plugin-sonarjs": "^0.5.0",
+    "rollup": "^1.29.0",
+    "rollup-plugin-async": "^1.2.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-filesize": "^6.2.1",
+    "rollup-plugin-includepaths": "^0.2.3",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-progress": "^1.1.1",
+    "rollup-plugin-size-snapshot": "^0.10.0"
+  }
+}

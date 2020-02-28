@@ -1,0 +1,16 @@
+{
+  "extension.js": {
+    "bundled": 14297,
+    "minified": 11387,
+    "gzipped": 4137,
+    "treeshaked": {
+      "rollup": {
+        "code": 155,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 1126
+      }
+    }
+  }
+}
