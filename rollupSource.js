@@ -1,32 +1,27 @@
-let rollup = require('rollup');
-let commonjs = require('rollup-plugin-commonjs');
-let nodeResolve = require('rollup-plugin-node-resolve');
-let includepaths = require('rollup-plugin-includepaths');
-let filesize = require('rollup-plugin-filesize');
-let progress = require('rollup-plugin-progress');
-let {sizeSnapshot } = require('rollup-plugin-size-snapshot');
-let buble = require('@rollup/plugin-buble');
-let json = require('@rollup/plugin-json');
+import * as rollup from 'rollup';
+
+import buble from '@rollup/plugin-buble';
+import commonjs from 'rollup-plugin-commonjs';
+import includepaths from 'rollup-plugin-includepaths';
+import json from '@rollup/plugin-json';
+import nodeResolve from 'rollup-plugin-node-resolve';
 
 let inputOptions = {
   input: './lib/index.js',
   plugins: [
     json(),
-    progress({ clearLine: false }),
     includepaths({ paths: ['./lib', './node_modules'] }),
     nodeResolve({
       jsnext: true,
       main: true,
       browser: true
     }),
-    buble({ jsx: 'v', transforms: {asyncAwait: false}, target: { chrome: 71, firefox: 64, safari: 10, node: 8.7 } }),
+    buble({ transforms: { asyncAwait: false }, target: { chrome: 71, firefox: 64, safari: 10, node: 8.7 } }),
     commonjs({
       include: ['./node_modules/**'], // Default: undefined
       // if false then skip sourceMap generation for CommonJS modules
       sourceMap: true // Default: true
-    }),
-    filesize(),
-    sizeSnapshot()
+    })
   ],
   cache: undefined,
   treeshake: false

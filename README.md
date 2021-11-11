@@ -11,7 +11,7 @@ There is already an excellent [MultiClock](https://github.com/mibus/MultiClock) 
   - [How to use](#how-to-use)
   - [Configuration](#configuration)
   - [Contributing](#contributing)
-    - [Instalation](#instalation)
+    - [Installation](#installation)
     - [Yarn](#yarn)
     - [Scripts](#scripts)
   - [Legal](#legal)
@@ -30,13 +30,14 @@ There is already an excellent [MultiClock](https://github.com/mibus/MultiClock) 
 - **24 hours format**: Toggle between 24 and 12 hours format. Defaults to 24.
 - **Show city name**: Controls if in the clock shows the city name before the time. Defaults to true.
 - **Show timezone**: Shows the timezone before the time and after the City name if it is shown. Defaults to false.
+- **Clear clocks**: It will deactivate all current active clocks. In case you can't remove a clock, you can use this button to clear all clocks.
 
 ## Contributing
 
 -   Use prettify and eslint to lint your code.
 -   Update the readme with an example if you add or change any functionality.
 
-### Instalation
+### Installation
 ```bash
 $ cd ~/.local/share/gnome-shell/extensions/
 $ git clone git@github.com:Masquerade-Circus/gnome-timezones-extension.git timezones@masquerade-circus.net
@@ -52,7 +53,6 @@ Use the next scripts to easy the developing time:
 - `yarn watch-log`: Keeps watching the journalctl gnome shell log. 
 - `yarn enable`: To enable the extension.
 - `yarn disable`: To disable the extension.
-- `yarn restart`: To restart the gnome-shell. Call this every time you make a chante to your code.
 - `yarn compile`: To compile the settings schemas.
 - `yarn build`: This build the source, compiles the schemas and makes the distributable zip file.
 

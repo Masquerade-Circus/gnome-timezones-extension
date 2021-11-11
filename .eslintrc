@@ -26,10 +26,7 @@
     "no-with": 2,
     "semi-spacing": 2,
     "space-before-blocks": 2,
-    "space-before-function-paren": [
-      2,
-      { "anonymous": "always", "named": "never" }
-    ],
+    "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
     "space-in-parens": 2,
     "space-infix-ops": 2,
     "space-unary-ops": 2,
@@ -46,7 +43,7 @@
     "valid-jsdoc": 2,
     "no-var": "error",
     "no-undef": 0,
-    "no-unused-vars":"warn",
+    "no-unused-vars": "warn",
     "no-multi-spaces": "error",
     "no-multiple-empty-lines": "error",
     "one-var": "off",
@@ -59,14 +56,12 @@
     "sonarjs/no-duplicate-string": 0,
     "sonarjs/prefer-object-literal": 0,
     "sonarjs/no-identical-functions": 0,
-    "max-lines-per-function": [
-      "warn",
-      { "max": 300, "skipBlankLines": true, "skipComments": true }
-    ],
-    "max-len": ["error", 145],
+    "max-lines-per-function": ["warn", { "max": 300, "skipBlankLines": true, "skipComments": true }],
+    "max-len": ["error", 160],
     "max-statements-per-line": ["error", { "max": 3 }],
     "gjs/no-template-strings": "off",
-    "gjs/no-modules": "off"
+    "gjs/no-modules": "off",
+    "object-shorthand": "off"
   },
   "env": {
     "shared-node-browser": true,

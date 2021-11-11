@@ -348,9 +348,10 @@ var timezones = [
   'Pacific/Wallis',
   'Pacific/Apia',
   'Africa/Johannesburg'
-];'use strict';
+];/* eslint-disable no-unused-vars */
+'use strict';
 
-const {GLib, St, Clutter, GnomeDesktop, Gio } = imports.gi;
+const { GLib, St, Clutter, GnomeDesktop, Gio } = imports.gi;
 const { main, panelMenu, popupMenu } = imports.ui;
 
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -362,8 +363,8 @@ let Clock = {
     showCity: true,
     showTimezone: false
   },
-  enable: function () {
-    Clock.state = timezones.sort().map(item => {
+  enable() {
+    Clock.state = timezones.sort().map((item) => {
       return {
         timezone: item,
         lowerTimezone: item.toLowerCase(),
@@ -371,18 +372,14 @@ let Clock = {
       };
     });
 
-    Clock.schema = Gio.SettingsSchemaSource.new_from_directory(
-      Me.dir.get_child('schemas').get_path(),
-      Gio.SettingsSchemaSource.get_default(),
-      false
-    );
+    Clock.schema = Gio.SettingsSchemaSource.new_from_directory(Me.dir.get_child('schemas').get_path(), Gio.SettingsSchemaSource.get_default(), false);
     Clock.settings = new Gio.Settings({
       settings_schema: Clock.schema.lookup('org.gnome.shell.extensions.timezones', true)
     });
 
     Clock.loadSettings();
 
-    let button = new panelMenu.Button(0.50, Me.metadata.name);
+    let button = new panelMenu.Button(0.5, Me.metadata.name);
     button.set_y_align(Clutter.ActorAlign.CENTER);
 
     let label = new St.Label({
@@ -402,16 +399,16 @@ let Clock = {
 
     main.panel.addToStatusArea(`${Me.metadata.name} Indicator`, Clock.button, 1, 'center');
   },
-  disable: function () {
+  disable() {
     Clock.SystemClock.disconnect(Clock.signalId);
     Clock.button.destroy();
     Clock.saveSettings();
   },
-  loadSettings: function () {
+  loadSettings() {
     let timezones = Clock.settings.get_value('timezones');
     let timezonesArray = timezones.deep_unpack();
     if (timezonesArray.length > 0) {
-      Clock.state.forEach(item => {
+      Clock.state.forEach((item) => {
         item.active = timezonesArray.indexOf(item.timezone) !== -1;
       });
     }
@@ -424,24 +421,28 @@ let Clock = {
       }
     }
   },
-  saveSettings: function () {
+  saveSettings() {
     Clock.settings.set_value(
       'timezones',
-      new GLib.Variant('as', Clock.state.filter(item => item.active).map(item => item.timezone))
+      new GLib.Variant(
+        'as',
+        Clock.state.filter((item) => item.active).map((item) => item.timezone)
+      )
     );
 
     Clock.settings.set_value('config', new GLib.Variant('a{sb}', Clock.config));
   },
-  initMenu: function () {
+  initMenu() {
     Clock.menu = Clock.button.menu;
     Clock.activeMenu = Clock.createScrollableMenuSection();
     Clock.inactiveMenu = Clock.createScrollableMenuSection();
     Clock.configMenu = Clock.createScrollableMenuSection();
     Clock.configMenu.itemActivated = () => {};
 
-    Clock.addConfigSwitch({label: '24 hours format', name: 'format24'});
-    Clock.addConfigSwitch({label: 'Show city name', name: 'showCity'});
-    Clock.addConfigSwitch({label: 'Show timezone', name: 'showTimezone'});
+    Clock.addConfigSwitch({ label: '24 hours format', name: 'format24' });
+    Clock.addConfigSwitch({ label: 'Show city name', name: 'showCity' });
+    Clock.addConfigSwitch({ label: 'Show timezone', name: 'showTimezone' });
+    Clock.activeMenu.addMenuItem(new popupMenu.PopupSeparatorMenuItem('Active clocks'));
 
     let inputFilter = new St.Entry({ width: 300, can_focus: true });
     inputFilter.clutter_text.connect('text-changed', (o) => {
@@ -449,7 +450,7 @@ let Clock = {
       Clock.updateInactiveMenu();
     });
 
-    let inputFilterItem = new popupMenu.PopupBaseMenuItem({reactive: false});
+    let inputFilterItem = new popupMenu.PopupBaseMenuItem({ reactive: false });
     inputFilterItem.actor.add_child(inputFilter);
 
     Clock.menu.addMenuItem(new popupMenu.PopupSeparatorMenuItem('Active clocks'));
@@ -459,6 +460,8 @@ let Clock = {
     Clock.menu.addMenuItem(Clock.inactiveMenu);
     Clock.menu.addMenuItem(new popupMenu.PopupSeparatorMenuItem('Config'));
     Clock.menu.addMenuItem(Clock.configMenu);
+    Clock.configMenu.addMenuItem(new popupMenu.PopupSeparatorMenuItem(''));
+    Clock.configMenu.addAction('Clear clocks', () => Clock.clearClocks());
 
     Clock.menu.connect('open-state-changed', (menu, open) => {
       if (open) {
@@ -468,7 +471,7 @@ let Clock = {
       }
     });
   },
-  addConfigSwitch: function ({label, name}) {
+  addConfigSwitch({ label, name }) {
     let configSwitch = new popupMenu.PopupSwitchMenuItem(label, Clock.config[name]);
     configSwitch.connect('toggled', (event, state) => {
       Clock.config[name] = state;
@@ -477,7 +480,7 @@ let Clock = {
     });
     Clock.configMenu.addMenuItem(configSwitch);
   },
-  createScrollableMenuSection: function () {
+  createScrollableMenuSection() {
     let menu = new popupMenu.PopupMenuSection();
     menu.actor = new St.ScrollView({
       style_class: 'popup-menu-content',
@@ -487,9 +490,9 @@ let Clock = {
     menu.actor.add_actor(menu.box);
     return menu;
   },
-  updateLabel: function () {
+  updateLabel() {
     let text = '';
-    Clock.state.forEach(item => text += item.active ? `    ${Clock.getLabelForTimezone({item: item})}` : '');
+    Clock.state.forEach((item) => (text += item.active ? `    ${Clock.getLabelForTimezone({ item: item })}` : ''));
     text = text.trim();
 
     if (text.length === 0) {
@@ -498,46 +501,45 @@ let Clock = {
 
     Clock.label.text = text;
   },
-  getLabelForTimezone: function ({item, full}) {
+  getLabelForTimezone({ item, full }) {
     let glibTimezone = GLib.TimeZone.new(item.timezone);
     let now = GLib.DateTime.new_now(glibTimezone);
     let timezoneLabel = full ? item.timezone : Clock.config.showCity ? item.timezone.split('/').pop().replace('_', ' ') : '';
     let offset = full || Clock.config.showTimezone ? ` ${now.format('%Z')} ` : ' ';
     return `${timezoneLabel}${offset}${now.format(Clock.config.format24 ? '%R' : '%l:%M %p')}`;
   },
-  updateMenu: function () {
+  updateMenu() {
     Clock.updateTimeLabels();
     Clock.updateActiveMenu();
     Clock.updateInactiveMenu();
   },
-  updateTimeLabels: function () {
-    Clock.state.forEach(item => item.label = Clock.getLabelForTimezone({item: item, full: true}));
+  updateTimeLabels() {
+    Clock.state.forEach((item) => (item.label = Clock.getLabelForTimezone({ item: item, full: true })));
   },
-  updateActiveMenu: function () {
+  updateActiveMenu() {
     let active = String.fromCodePoint(parseInt('2714', 16));
     Clock.activeMenu.removeAll();
 
-    Clock.state.filter(item => item.active).forEach(item => Clock.activeMenu.addAction(
-      `${active} ${item.label}`,
-      () => Clock.toggleTimezone(item))
-    );
+    Clock.state.filter((item) => item.active).forEach((item) => Clock.activeMenu.addAction(`${active} ${item.label}`, () => Clock.toggleTimezone(item)));
   },
-  updateInactiveMenu: function () {
+  updateInactiveMenu() {
     Clock.inactiveMenu.removeAll();
     Clock.state
-      .filter(item => !item.active && item.lowerTimezone.indexOf(Clock.hint) !== -1)
-      .forEach(item => Clock.inactiveMenu.addAction(
-        item.label,
-        () => Clock.toggleTimezone(item))
-      );
+      .filter((item) => !item.active && item.lowerTimezone.indexOf(Clock.hint) !== -1)
+      .forEach((item) => Clock.inactiveMenu.addAction(item.label, () => Clock.toggleTimezone(item)));
   },
-  toggleTimezone: function (item) {
+  toggleTimezone(item) {
     item.active = !item.active;
+    Clock.updateLabel();
+    Clock.saveSettings();
+  },
+  clearClocks() {
+    Clock.state.forEach((item) => (item.active = false));
+    Clock.updateMenu();
     Clock.updateLabel();
     Clock.saveSettings();
   }
 };
-
 
 function init() {
   log(`initializing ${Me.metadata.name} version ${Me.metadata.version}`);
