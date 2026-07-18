@@ -7,5 +7,10 @@
     <key name="config" type="a{sb}">
       <default>{}</default>
     </key>
+    <key name="labels" type="a{ss}">
+      <default>{}</default>
+      <summary>Per-zone custom display labels</summary>
+      <description>Maps an IANA timezone id to a user-chosen display label (e.g. "Home") shown instead of the city name in the panel and menu.</description>
+    </key>
   </schema>
 </schemalist>

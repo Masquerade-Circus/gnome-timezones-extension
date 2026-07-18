@@ -60,3 +60,9 @@ typings/
 .cache
 
 *.zip
+
+# GeoNames source data for tools/generate-city-aliases.py.
+# Provenance (source URL, download date, sha256, size) is recorded in the
+# generator's header comment and tools/README.md instead of committing the
+# binary; re-download it there if you need to regenerate cityAliases.js.
+tools/cities15000.zip
