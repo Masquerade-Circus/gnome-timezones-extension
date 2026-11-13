@@ -70,7 +70,7 @@
     "es6": true
   },
   "parserOptions": {
-    "ecmaVersion": 9,
+    "ecmaVersion": 2022,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true,

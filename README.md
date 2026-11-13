@@ -1,6 +1,8 @@
 # Gnome Timezones Extension
 Show multiple clocks in the panel. 
 
+Supports GNOME Shell 45 – 50. 
+
 For those who need more than one additional clock, this extension makes very easy to add two, three or more clocks to the main panel area.
 
 There is already an excellent [MultiClock](https://github.com/mibus/MultiClock) extension, but that extension only displays a second clock. What i need is to reference 3 different clocks, my local time, UTC time and Puerto Rico time. If you have the same need, this extension can help you.
@@ -49,12 +51,14 @@ This extension use [yarn](https://yarnpkg.com/) as its main ally. So use the `ya
 ### Scripts  
 Use the next scripts to easy the developing time: 
 
-- `yarn dev:source`: Use rollup to watch for changes and rebuild the extension.js file.
 - `yarn watch-log`: Keeps watching the journalctl gnome shell log. 
 - `yarn enable`: To enable the extension.
 - `yarn disable`: To disable the extension.
 - `yarn compile`: To compile the settings schemas.
-- `yarn build`: This build the source, compiles the schemas and makes the distributable zip file.
+- `yarn build`: Compiles the schemas and makes the distributable zip file (`gnome-extensions pack`).
+- `yarn install-zip`: Installs the packed zip for the current user.
+
+There is no build step: `extension.js` is a native ES module (GNOME Shell 45+) and imports `lib/timezones.js` directly. After changing the code, log out and back in (Wayland) or run a nested shell with `dbus-run-session gnome-shell --devkit` (GNOME 49+) / `--nested --wayland` (older) to test it.
 
 ## Legal
 
